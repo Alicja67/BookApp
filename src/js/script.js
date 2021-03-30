@@ -10,21 +10,43 @@
   };
   // console.log(select);
 
+  const determineRatingBgc = function(rating){
+    let ratingBackground = '';
+
+    if(rating < 6){
+      ratingBackground = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
+    }else if(rating > 6 && rating<= 8){
+      ratingBackground = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
+    }else if(rating > 8 && rating<= 9){
+      ratingBackground = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+    }else{
+      ratingBackground = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
+    }
+
+    return ratingBackground;
+  };
+
   const render = function(){
     const data = dataSource;
     const bookContainer = document.querySelector(select.containerOfBooks);
 
     for(const book of data.books){
-      // console.log('book', book);
+
+      const rating = book.rating;
+      console.log('rating', rating);
+      book.ratingBgc = determineRatingBgc(rating);
+      book.ratingWidth = rating * 10;
+      console.log('ratingBGC, ratingWidth', book.ratingBgc, book.ratingWidth);
       const menuBook = Handlebars.compile(document.querySelector(select.templateOf).innerHTML);
       const generatedHtml = menuBook(book);
       const HTML = utils.createDOMFromHTML(generatedHtml);
       bookContainer.appendChild(HTML);
-      // console.log('data', data);
-      // console.log('HTML', HTML);
+      console.log('book', book);
+      console.log('generetdHTML', generatedHtml);
+      console.log('data', data);
+      console.log('HTML', HTML);
     }
     console.log('bookCointainer', bookContainer);
-    // return bookContainer;
   };
   render();
 
@@ -98,11 +120,9 @@
         }
       };
 
-      console.log('filter', filter);
-      console.log('filters', filters);
-
       addHiddenClass();
     });
   };
   initActions();
+
 }
